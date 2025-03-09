@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Monitoring Suhu & Kelembapan</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <img src="logo_pln.png" alt="Logo PLN" class="logo">
+        <h1>Dashboard Monitoring Suhu & Kelembapan</h1>
+    </header>
+    <main>
+        <section class="data-display">
+            <h2>Data Real-Time</h2>
+            <p>Suhu: <span id="temperature">-</span> °C</p>
+            <p>Kelembapan: <span id="humidity">-</span> %</p>
+        </section>
+        <section class="chart-container">
+            <h2>Grafik Suhu & Kelembapan</h2>
+            <canvas id="tempChart"></canvas>
+        </section>
+        <section class="control">
+            <h2>Kontrol Kipas</h2>
+            <button id="manualFan">Nyalakan Kipas Manual</button>
+        </section>
+        <section class="history">
+            <h2>Riwayat Peringatan</h2>
+            <ul id="alertHistory"></ul>
+        </section>
+        <section class="data-link">
+            <h2>Akses Data</h2>
+            <a href="https://docs.google.com/spreadsheets/d/1Fa4PKNpOktX_Jz7p-EawwENBnWZY6OIIhojMtC5d8qU" target="_blank">Lihat Data di Google Spreadsheet</a>
+        </section>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
