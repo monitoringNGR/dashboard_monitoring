@@ -3,38 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Monitoring Suhu & Kelembapan</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Monitoring Suhu & Kelembapan</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+        }
+        h1 {
+            color: #333;
+        }
+        .status {
+            font-size: 1.5em;
+            margin: 10px 0;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 1em;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .on { background: green; color: white; }
+        .off { background: red; color: white; }
+    </style>
 </head>
 <body>
-    <header>
-        <img src="logo_pln.png" alt="Logo PLN" class="logo">
-        <h1>Dashboard Monitoring Suhu & Kelembapan</h1>
-    </header>
-    <main>
-        <section class="data-display">
-            <h2>Data Real-Time</h2>
-            <p>Suhu: <span id="temperature">-</span> °C</p>
-            <p>Kelembapan: <span id="humidity">-</span> %</p>
-        </section>
-        <section class="chart-container">
-            <h2>Grafik Suhu & Kelembapan</h2>
-            <canvas id="tempChart"></canvas>
-        </section>
-        <section class="control">
-            <h2>Kontrol Kipas</h2>
-            <button id="manualFan">Nyalakan Kipas Manual</button>
-        </section>
-        <section class="history">
-            <h2>Riwayat Peringatan</h2>
-            <ul id="alertHistory"></ul>
-        </section>
-        <section class="data-link">
-            <h2>Akses Data</h2>
-            <a href="https://docs.google.com/spreadsheets/d/1Fa4PKNpOktX_Jz7p-EawwENBnWZY6OIIhojMtC5d8qU" target="_blank">Lihat Data di Google Spreadsheet</a>
-        </section>
-    </main>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="script.js"></script>
+    <div class="container">
+        <h1>Dashboard Monitoring</h1>
+        <p class="status">Suhu: <span id="temperature">--</span> °C</p>
+        <p class="status">Kelembapan: <span id="humidity">--</span> %</p>
+        <p class="status">Kipas: <span id="fanStatus">--</span></p>
+        <button class="on" onclick="controlFan('on')">Hidupkan Kipas</button>
+        <button class="off" onclick="controlFan('off')">Matikan Kipas</button>
+    </div>
+
+    <script>
+        function fetchData() {
+            fetch('data.json')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('temperature').innerText = data.temperature;
+                    document.getElementById('humidity').innerText = data.humidity;
+                    document.getElementById('fanStatus').innerText = data.fan;
+                })
+                .catch(error => console.error('Error fetching data:', error));
+        }
+
+        function controlFan(state) {
+            fetch(`/fan/${state}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('fanStatus').innerText = data.fan;
+                })
+                .catch(error => console.error('Error controlling fan:', error));
+        }
+
+        setInterval(fetchData, 5000); // Update setiap 5 detik
+        fetchData(); // Panggil saat halaman dimuat
+    </script>
 </body>
 </html>
